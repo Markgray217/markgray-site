@@ -1,0 +1,49 @@
+# Netlify Configuration
+# Build and deployment settings for markgray-site
+
+[build]
+  # Directory to deploy
+  publish = "dist"
+  
+  # Build command
+  command = "npm run build"
+  
+  # Node.js version
+  node_version = "18.17.0"
+
+[build.environment]
+  # Environment variables
+  NODE_ENV = "production"
+
+# Redirect rules
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+  conditions = {Language = ["en"], Country = ["US"]}
+
+# Cache rules for static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.{js,css}"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.{html}"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
